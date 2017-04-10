@@ -1,0 +1,15 @@
+{
+  "cart": {
+    "general": {
+      "remove": "Remove",
+      "update": "Update",
+      "checkout": "Checkout"
+    },
+    "label": {
+      "items": "Items",
+      "price": "Price",
+      "quantity": "Qty.",
+      "total": "Total"
+    }
+  }
+}
