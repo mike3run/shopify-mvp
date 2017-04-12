@@ -111,6 +111,7 @@ gulp.task('icons', function () {
       }]
     }))
     .pipe(svgstore({ inlineSvg: true }))
+    .pipe(rename('svg-icons.liquid'))
     .pipe(gulp.dest(DESTINATION + '/snippets'))
     .pipe(theme.stream())
 })
