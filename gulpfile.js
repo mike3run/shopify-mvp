@@ -1,8 +1,3 @@
-// gulp dev - for development - browser-sync + watchers
-// gulp - to build everything
-
-// DESTINATION - set the destination path
-
 const argv = require('yargs').argv
 const gulp = require('gulp')
 const sass = require('gulp-sass')
@@ -42,103 +37,103 @@ shopifyconfig.root = process.cwd() + '/' + DESTINATION
 
 gulp.task('css', function () {
   return gulp.src('src/assets/css/main.scss')
-        .pipe(plumber())
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(replace(/({{|}}|{%|%})/g, '/*!$1*/')) // Comment out Liquid tags, so post-css doesn't trip out
-        .pipe(postcss([
-          autoprefixer({browsers: [ 'last 2 versions', 'Explorer >= 9' ]})
-        ])
-        )
-        .pipe(replace(/\/\*!({{|}}|{%|%})\*\//g, '$1')) // Re-enable Liquid tags
-        .pipe(rename('ns_all.css'))
-        .pipe(sourcemaps.write('.', {sourceMappingURL: makeLiquidSourceMappingURL})) // ns_all.css.map
-        .pipe(rename(appendLiquidExt)) // ns_all.css.liquid
-        .pipe(replace(sourceMappingURLCSSregExp, sourceMappingURLCSSreplace))
-        .pipe(gulp.dest(DESTINATION + '/assets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(replace(/({{|}}|{%|%})/g, '/*!$1*/')) // Comment out Liquid tags, so post-css doesn't trip out
+    .pipe(postcss([
+      autoprefixer({browsers: [ 'last 2 versions', 'Explorer >= 9' ]})
+    ])
+    )
+    .pipe(replace(/\/\*!({{|}}|{%|%})\*\//g, '$1')) // Re-enable Liquid tags
+    .pipe(rename('ns_all.css'))
+    .pipe(sourcemaps.write('.', {sourceMappingURL: makeLiquidSourceMappingURL})) // ns_all.css.map
+    .pipe(rename(appendLiquidExt)) // ns_all.css.liquid
+    .pipe(replace(sourceMappingURLCSSregExp, sourceMappingURLCSSreplace))
+    .pipe(gulp.dest(DESTINATION + '/assets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('js', function () {
   return gulp.src([ 'src/assets/js/!(main)*.js', 'src/assets/js/main.js' ])
-        .pipe(plumber())
-        // .pipe( sourcemaps.init() )
-        .pipe(babel({presets: ['es2015']}))
-        .pipe(concat('ns_all.js'))
-        .pipe(gulpif(USE_JS_UGLIFY, uglify()))
-        .pipe(sourcemaps.write('.', {sourceMappingURL: makeLiquidSourceMappingURL}))
-        .pipe(rename(appendLiquidExt))
-        .pipe(replace(sourceMappingURLJSregExp, sourceMappingURLJSreplace))
-        .pipe(gulp.dest(DESTINATION + '/assets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(babel({presets: ['es2015']}))
+    .pipe(concat('ns_all.js'))
+    .pipe(gulpif(USE_JS_UGLIFY, uglify()))
+    .pipe(sourcemaps.write('.', {sourceMappingURL: makeLiquidSourceMappingURL}))
+    .pipe(rename(appendLiquidExt))
+    .pipe(replace(sourceMappingURLJSregExp, sourceMappingURLJSreplace))
+    .pipe(gulp.dest(DESTINATION + '/assets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('js-libs', function () {
   return gulp.src([ 'src/assets/js-libs/jquery.js', 'src/assets/js-libs/*.js' ])
-        .pipe(plumber())
-        .pipe(concat('js_libs.js'))
-        .pipe(gulpif(USE_JS_UGLIFY, uglify()))
-        .pipe(gulp.dest(DESTINATION + '/assets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(concat('js_libs.js'))
+    .pipe(gulpif(USE_JS_UGLIFY, uglify()))
+    .pipe(gulp.dest(DESTINATION + '/assets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('fonts', function () {
   return gulp.src([ 'src/assets/fonts/**/*.{ttf,woff,woff2,eof,eot,otf,svg}' ])
-        .pipe(plumber())
-        .pipe(changed(DESTINATION + '/assets', {hasChanged: changed.compareSha1Digest}))
-        .pipe(rename(flatten))
-        .pipe(rename({ dirname: '', prefix: 'fonts_' }))
-        .pipe(gulp.dest(DESTINATION + '/assets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(changed(DESTINATION + '/assets', {hasChanged: changed.compareSha1Digest}))
+    .pipe(rename(flatten))
+    .pipe(rename({ dirname: '', prefix: 'fonts_' }))
+    .pipe(gulp.dest(DESTINATION + '/assets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('images', function () {
   return gulp.src([ 'src/assets/images/**/*.{svg,png,jpg,jpeg,gif,ico}' ])
-        .pipe(plumber())
-        .pipe(changed(DESTINATION + '/assets'))
-        .pipe(rename(flatten))
-        .pipe(rename({ dirname: '', prefix: '' }))
-        .pipe(gulp.dest(DESTINATION + '/assets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(changed(DESTINATION + '/assets'))
+    .pipe(rename(flatten))
+    .pipe(rename({ dirname: '', prefix: '' }))
+    .pipe(gulp.dest(DESTINATION + '/assets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('icons', function () {
   return gulp.src([ 'src/assets/icons/**/*.svg' ])
-        .pipe(plumber())
-        .pipe(changed(DESTINATION + '/assets'))
-        .pipe(svgmin({
-          plugins: [{
-            removeStyleElement: true
-          }, {
-            removeAttrs: {
-              attrs: ['fill', 'stroke', 'fill.*', 'stroke.*']
-            }
-          }]
-        }))
-        .pipe(svgstore({ inlineSvg: true }))
-        .pipe(gulp.dest(DESTINATION + '/snippets'))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(changed(DESTINATION + '/assets'))
+    .pipe(svgmin({
+      plugins: [{
+        removeStyleElement: true
+      }, {
+        removeAttrs: {
+          attrs: ['fill', 'stroke', 'fill.*', 'stroke.*']
+        }
+      }]
+    }))
+    .pipe(svgstore({ inlineSvg: true }))
+    .pipe(gulp.dest(DESTINATION + '/snippets'))
+    .pipe(theme.stream())
 })
 
 gulp.task('copy', function () {
   return gulp.src([ 'src/{layout,snippets,templates,sections}/**/*.*' ])
-        .pipe(plumber())
-        .pipe(replace(/{% schema %}([^]*.+[^]*){% endschema %}/gi, replaceYAMLwithJSON))
-        // .pipe( replace(/({%)(?!\s*?(?:end)?(?:raw|schema|javascript|stylesheet)\s*?)(.+?)(%})/g, '$1- $2 -$3') ) // make whitespace-insensitive tags {% -> {%-
-        .pipe(replace(/^\s*[\r\n]/gm, '')) // remove empty lines
-        .pipe(changed(DESTINATION, {hasChanged: changed.compareSha1Digest}))
-        // .pipe( changed( DESTINATION, {hasChanged: changed.compareLastModifiedTime} ) )
-        .pipe(gulp.dest(DESTINATION))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(replace(/{% schema %}([^]*.+[^]*){% endschema %}/gi, replaceYAMLwithJSON))
+    .pipe(replace(/({%)(?!\s*?(?:end)?(?:raw|schema|javascript|stylesheet)\s*?)(.+?)(%})/g, '$1- $2 -$3')) // make whitespace-insensitive tags {% -> {%-
+    .pipe(replace(/^\s*[\r\n]/gm, '')) // remove empty lines
+    .pipe(changed(DESTINATION, {hasChanged: changed.compareSha1Digest}))
+    .pipe(changed(DESTINATION, {hasChanged: changed.compareLastModifiedTime}))
+    .pipe(gulp.dest(DESTINATION))
+    .pipe(theme.stream())
 })
 
 gulp.task('configs', function () {
   return gulp.src([ 'src/{config,locales}/**/*.*' ])
-        .pipe(plumber())
-        .pipe(yaml({space: 2}))
-        .pipe(changed(DESTINATION, {hasChanged: changed.compareSha1Digest}))
-        .pipe(gulp.dest(DESTINATION))
-        .pipe(theme.stream())
+    .pipe(plumber())
+    .pipe(yaml({space: 2}))
+    .pipe(changed(DESTINATION, {hasChanged: changed.compareSha1Digest}))
+    .pipe(gulp.dest(DESTINATION))
+    .pipe(theme.stream())
 })
 
 gulp.task('reload-on-css', gulp.series('css', reload))
@@ -180,7 +175,7 @@ gulp.task('purge', gulp.series('theme', function (done) {
 gulp.task('watch', gulp.series(function (done) {
   USE_JS_UGLIFY = false
 
-    // Watch & run tasks
+  // Watch & run tasks
   gulp.watch('src/assets/{css,css-libs}/**/*.{css,less,scss,liquid}', gulp.series('reload-on-css', reload))
   gulp.watch('src/assets/js/**/*.js', gulp.series('reload-on-js', reload))
   gulp.watch('src/assets/js-libs/**/*.js', gulp.series('reload-on-js-libs', reload))
